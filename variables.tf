@@ -9,7 +9,7 @@ variable "Key_name" {
 }
 
 variable "ClientID" {
-    default = "ClientID"
+    default = "123456"
     description = "Unique Client ID to differentiate resources"
 }
 

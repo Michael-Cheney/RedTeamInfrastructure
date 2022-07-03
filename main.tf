@@ -1,8 +1,8 @@
-resource "aws_instance" "DNS_exfil_Server" {
+resource "aws_instance" "Kali_Sliver_C2_Server" {
     ami             = "ami-0e549bae2ca666772"
     instance_type   = "t2.medium"
     key_name = var.Key_name
-    security_groups = ["${var.ClientID}_DNS_exfil_Server_SG"]
+    security_groups = ["${var.ClientID}_Kali_Sliver_C2_Server_SG"]
 
     root_block_device {
         volume_size = 30
@@ -14,13 +14,8 @@ resource "aws_instance" "DNS_exfil_Server" {
         destination = "/home/kali/setup.yaml"
     }
 
-    provisioner "file" {
-        source = "config/zshrc.bak"
-        destination = "/home/kali/.zshrc"
-    }
-
     connection {
-        host = aws_instance.DNS_exfil_Server.public_ip
+        host = aws_instance.Kali_Sliver_C2_Server.public_ip
         type = "ssh"
         user = "kali"
         private_key = file(var.Private_key)
@@ -35,15 +30,15 @@ resource "aws_instance" "DNS_exfil_Server" {
     }
 
     tags                          = {
-        Name        = "${var.ClientID}_DNS_exfil_Server"
+        Name        = "${var.ClientID}_Kali_Sliver_C2_Server"
         ClientID    = var.ClientID
     }
 }
 
-resource "aws_security_group" "DNS_exfil_Server_SG" {
-    name = "${var.ClientID}_DNS_exfil_Server_SG"
+resource "aws_security_group" "Kali_Sliver_C2_Server_SG" {
+    name = "${var.ClientID}_Kali_Sliver_C2_Server_SG"
     tags                          = {
-        Name        = "${var.ClientID}_DNS_exfil_Server_SG"
+        Name        = "${var.ClientID}_Kali_Sliver_C2_Server_SG"
         ClientID    = var.ClientID
     }
     ingress {
@@ -64,6 +59,12 @@ resource "aws_security_group" "DNS_exfil_Server_SG" {
         protocol = "tcp"
         cidr_blocks = ["0.0.0.0/0"]
     }
+    ingress {
+        from_port = 8888
+        to_port = 8888
+        protocol = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
     egress {
         from_port = 0
         protocol = "-1"
@@ -74,11 +75,11 @@ resource "aws_security_group" "DNS_exfil_Server_SG" {
 
 resource "aws_route53_record" "dnsexfil" {
     zone_id = var.Zone_id
-    name    = "kali.${var.Root_domain}"
+    name    = "${var.ClientID}-kali.${var.Root_domain}"
     type    = "A"
     ttl     = "300"
-    records = [aws_instance.DNS_exfil_Server.public_ip]
+    records = [aws_instance.Kali_Sliver_C2_Server.public_ip]
     depends_on                  = [
-      aws_instance.DNS_exfil_Server
+      aws_instance.Kali_Sliver_C2_Server
     ]
 }
