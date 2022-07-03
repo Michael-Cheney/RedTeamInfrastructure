@@ -58,10 +58,3 @@
     package:
       name: dconf-cli
       state: present
-  - name: Copy a ZSH profile
-    ansible.builtin.copy:
-      src: /home/kali/Kali_Build/zshrc.bak
-      dest: /home/kali/.zshrc
-      owner: kali
-      group: kali
-      mode: '0644'
