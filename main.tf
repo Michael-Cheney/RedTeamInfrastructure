@@ -73,7 +73,7 @@ resource "aws_security_group" "Kali_Sliver_C2_Server_SG" {
     }
 }
 
-resource "aws_route53_record" "dnsexfil" {
+resource "aws_route53_record" "Kali_Sliver_C2_Server" {
     zone_id = var.Zone_id
     name    = "${var.ClientID}-kali.${var.Root_domain}"
     type    = "A"
