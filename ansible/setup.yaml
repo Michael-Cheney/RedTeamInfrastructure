@@ -6,18 +6,6 @@
     package:
       name: python3-venv
       state: present
-  - name: Install Bloodhound
-    package:
-      name: bloodhound
-      state: present
-  - name: Install FileZilla
-    package:
-      name: filezilla
-      state: present
-  - name: Install Remmina
-    package:
-      name: remmina
-      state: present
   - name: Install Docker
     package:
       name: docker.io
@@ -66,21 +54,10 @@
     package:
       name: mingw-w64 
       state: present
-  - name: Install guake
-    package:
-      name: guake
-      state: present
   - name: Install dconf-cli
     package:
       name: dconf-cli
       state: present
-  - name: Install gnome-font-viewer
-    package:
-      name: gnome-font-viewer
-      state: present
-  - name: Install Visual Studio
-    apt:
-      deb: https://az764295.vo.msecnd.net/stable/30d9c6cd9483b2cc586687151bcbcd635f373630/code_1.68.1-1655263094_amd64.deb
   - name: Copy a ZSH profile
     ansible.builtin.copy:
       src: /home/kali/Kali_Build/zshrc.bak
