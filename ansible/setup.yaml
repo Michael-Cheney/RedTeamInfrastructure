@@ -58,6 +58,3 @@
     package:
       name: dconf-cli
       state: present
-  - name: Install Sliver Server
-    command: curl https://sliver.sh/install|sudo bash
-    run_once: true
